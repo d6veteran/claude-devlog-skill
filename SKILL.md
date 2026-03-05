@@ -100,7 +100,13 @@ Write the entry following the format above. Include rich detail — the goal is 
 Present the drafted entry in the conversation and ask for confirmation or edits before committing. Never push without the user seeing the entry first.
 
 ### Step 3: Update DEVLOG.md
-Read the existing DEVLOG.md from the repo (or create it if it doesn't exist). Insert the new entry at the top of the file, below the header. Entries are reverse-chronological (newest first).
+**IMPORTANT: DEVLOG.md always lives inside the project repo root — never in a parent directory.**
+
+Determine the correct path:
+- **Local Claude Code session** (most common): The primary working directory IS the repo root. Use `{cwd}/DEVLOG.md` directly — e.g., if cwd is `/Users/alice/projects/my-app`, write to `/Users/alice/projects/my-app/DEVLOG.md`.
+- **Remote/cloned session**: Use the cloned repo path (e.g., `/home/claude/[repo-name]/DEVLOG.md`).
+
+Read the existing DEVLOG.md from that path (or create it if it doesn't exist). Insert the new entry at the top of the file, below the header. Entries are reverse-chronological (newest first).
 
 If creating DEVLOG.md for the first time, use this header:
 
@@ -135,7 +141,17 @@ Use a commit message prefixed with `devlog:` followed by a short version of the 
 
 ## Git Setup (First-Time Per Session)
 
-If this is the first time using the devlog in a session, check whether the repo is cloned and git is configured:
+### Local Claude Code Session (Most Common)
+If Claude Code's primary working directory is already inside the project repo, no setup is needed — the repo is already available locally. Verify with:
+
+```bash
+git -C /path/to/cwd rev-parse --show-toplevel
+```
+
+The output is the repo root. DEVLOG.md belongs there.
+
+### Remote/Sandboxed Session
+If the repo isn't available locally, check whether it's been cloned and git is configured:
 
 ```bash
 # Check if repo exists locally (use project-specific directory name)
