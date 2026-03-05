@@ -1,186 +1,71 @@
----
-name: devlog
-description: Maintain a structured development changelog (DEVLOG.md) that captures architectural decisions, progress milestones, key conversation takeaways, and strategic/business decisions for any project. Use this skill whenever the user says "log this", "devlog", "update the devlog", "push devlog", or references logging a decision, milestone, or takeaway. Also trigger proactively at the end of conversations that involve significant architectural choices, design changes, strategic pivots, or completed milestones — suggest a devlog entry even if the user doesn't ask. Trigger whenever the user mentions changelog, development log, decision log, or progress tracking for their project. Works across any project — not tied to a specific repo or product.
----
+# Devlog Skill for Claude
 
-# Development Changelog (Devlog) Skill
+A custom Claude skill that maintains a structured development changelog (`DEVLOG.md`) in your GitHub repository. It captures architectural decisions, progress milestones, key conversation takeaways, and strategic decisions — so critical context from your development conversations doesn't evaporate between sessions.
 
-This skill maintains a living development log (`DEVLOG.md`) in the root of a project's GitHub repository. It captures the important decisions, progress, and insights from development conversations so that future sessions have full context on what was done and why.
+## What It Does
 
-This skill is **project-agnostic** — it works with any repository. On first use in a session, it identifies the active project and adapts accordingly.
+- **Proactively suggests** devlog entries when significant decisions, milestones, or insights come up in conversation
+- **Accepts ad-hoc entries** when you say "log this" or "add to devlog"
+- **Writes detailed entries** with category tags, summaries, full context, and rationale
+- **Auto-pushes to GitHub** after you approve each entry
+- **Works with any project** — not tied to a specific repo or product
 
-## Why This Matters
+## Entry Categories
 
-Development conversations contain critical context — the *reasoning* behind decisions, alternatives that were considered and rejected, and strategic pivots that shaped the project. Without a structured log, this context evaporates between sessions. The devlog serves as institutional memory for the project, making every future conversation more informed.
+| Category | What It Captures |
+|---|---|
+| `architecture` | Technical design decisions, data model changes, stack choices |
+| `milestone` | Completed work, version releases, phase transitions |
+| `takeaway` | Key insights, lessons learned, important context |
+| `strategy` | Business decisions, market positioning, go-to-market pivots |
 
-## Project Context (First Use Per Session)
+## Installation
 
-The first time this skill triggers in a session, establish the project context by checking for clues in this order:
+1. Download the `devlog.skill` file from this repo
+2. In Claude.ai, open your Project
+3. Go to Project Settings → Skills
+4. Upload the `devlog.skill` file
 
-1. **Memory/conversation context** — Does Claude already know what project the user is working on? If so, confirm: "I'll log this to the devlog for [Project Name] — correct?"
-2. **Project knowledge** — Are there project files or documents that identify the project name and repo?
-3. **Ask the user** — If neither source provides clarity, ask: "Which project should I log this to? I'll need the project name and GitHub repo URL."
+## Usage
 
-Capture and remember for the session:
-- **Project name** — Used in the DEVLOG.md header and commit messages (e.g., "The Chronicle", "My Portfolio Site")
-- **GitHub repo URL** — Where to push (e.g., `https://github.com/user/repo.git`)
-- **GitHub authentication** — Personal Access Token (required each session since the environment resets)
-- **Default branch** — Usually `main`, but confirm if unsure
+Once installed, the skill activates automatically. You can:
 
-## Entry Format
+- **Let Claude suggest entries** — it will offer to log significant decisions at natural pause points
+- **Request entries directly** — say "log this", "devlog", or "add this to the devlog"
+- **Review before pushing** — Claude always shows you the draft entry before committing to GitHub
 
-Each entry follows this structure:
+On first use each session, Claude will ask for your GitHub repo URL and Personal Access Token (the environment resets between sessions).
+
+## DEVLOG.md Format
+
+Entries are reverse-chronological (newest first) and follow this structure:
 
 ```markdown
-## [YYYY-MM-DD] Brief descriptive title
+## [2025-03-04] Brief descriptive title
 
-**Category:** `architecture` | `milestone` | `takeaway` | `strategy`  
+**Category:** `architecture`
 **Tags:** `relevant`, `topic`, `tags`
 
 ### Summary
 A 1-2 sentence overview of what happened or was decided.
 
 ### Detail
-Full context including:
-- What was decided or accomplished
-- Why this approach was chosen
-- What alternatives were considered (and why they were rejected)
-- Dependencies or implications for future work
-- Any open questions or follow-ups
+Full context including what was decided, why, what alternatives
+were considered, and implications for future work.
 
 ### Related
-- Links to related entries, documents, or resources when applicable
+- Links to related entries or documents
 ```
 
-## Categories Explained
+## Repository Contents
 
-Choose the category that best fits each entry:
+| File | Purpose |
+|---|---|
+| `SKILL.md` | The skill source file — Claude's instructions for how the devlog works |
+| `devlog.skill` | Installable package — upload this to Claude.ai to install the skill |
+| `README.md` | This file — repo documentation |
+| `LICENSE` | License terms |
 
-- **`architecture`** — Technical design decisions, data model changes, stack choices, API design, infrastructure decisions. The "how we're building it" entries. Example: choosing SQLAlchemy over raw SQL, restructuring the data model for Crusade rules compliance.
+## License
 
-- **`milestone`** — Completed work, version releases, phase transitions, significant deliverables. The "what we shipped" entries. Example: completing the Data Model v1.2 specification, finishing development environment setup.
-
-- **`takeaway`** — Key insights from conversations, lessons learned, important context that should persist. The "what we learned" entries. Example: discovering that the kill log UI needs a quick-add interface for mobile efficiency.
-
-- **`strategy`** — Business decisions, market positioning, pricing changes, go-to-market pivots, competitive analysis conclusions. The "why we're doing it this way" entries. Example: pivoting from competing with existing tools to targeting new players entering through video games.
-
-## When to Create Entries
-
-### Proactive Suggestions (Claude-initiated)
-At natural pause points or the end of substantive conversations, review what was discussed and suggest devlog entries for any of the following:
-
-- A technical architecture decision was made or changed
-- A meaningful piece of work was completed
-- A strategic or business direction was established or shifted
-- An important insight emerged that should persist across sessions
-- A design trade-off was evaluated and a direction was chosen
-
-Frame the suggestion naturally: "This feels like something worth capturing in the devlog — we decided X because of Y. Want me to log it?"
-
-Do NOT suggest entries for:
-- Routine Q&A or simple lookups
-- Work that's still in-progress with no decision point
-- Minor clarifications that don't change direction
-
-### Ad-hoc Entries (User-initiated)
-The user may say things like:
-- "Log this"
-- "Add this to the devlog"
-- "This should go in the changelog"
-- "Devlog: [description]"
-
-When this happens, capture what the user is referring to — which may be the immediately preceding discussion, a specific decision, or something they describe explicitly.
-
-## Workflow: Creating and Pushing an Entry
-
-### Step 1: Draft the Entry
-Write the entry following the format above. Include rich detail — the goal is that someone reading this months from now (including a future Claude session) can fully understand what happened and why.
-
-### Step 2: Show the User
-Present the drafted entry in the conversation and ask for confirmation or edits before committing. Never push without the user seeing the entry first.
-
-### Step 3: Update DEVLOG.md
-Read the existing DEVLOG.md from the repo (or create it if it doesn't exist). Insert the new entry at the top of the file, below the header. Entries are reverse-chronological (newest first).
-
-If creating DEVLOG.md for the first time, use this header:
-
-```markdown
-# [Project Name] — Development Log
-
-A living record of architectural decisions, milestones, key insights, and strategic direction.  
-Auto-maintained via Claude devlog skill. Entries are reverse-chronological.
-
----
-```
-
-Replace `[Project Name]` with the actual project name established during session setup (e.g., "The Chronicle", "My API Service").
-
-### Step 4: Commit and Push to GitHub
-After the user approves:
-
-```bash
-cd /path/to/repo
-git add DEVLOG.md
-git commit -m "devlog: [brief title from entry]"
-git push origin main
-```
-
-Use a commit message prefixed with `devlog:` followed by a short version of the entry title.
-
-### Error Handling
-- **Git not configured:** Prompt the user to provide their repo URL and set up authentication. Walk them through creating a Personal Access Token if needed.
-- **Push fails:** Show the error, suggest common fixes (auth issues, branch protection, network). Offer to save the entry locally so it's not lost.
-- **DEVLOG.md has merge conflicts:** Show the conflict, help resolve it, then retry.
-- **No repo cloned locally:** Clone the repo first, then proceed.
-
-## Git Setup (First-Time Per Session)
-
-If this is the first time using the devlog in a session, check whether the repo is cloned and git is configured:
-
-```bash
-# Check if repo exists locally (use project-specific directory name)
-ls /home/claude/[repo-name] 2>/dev/null
-
-# If not, clone it (user needs to provide URL + token)
-git clone https://[token]@github.com/[user]/[repo].git /home/claude/[repo-name]
-
-# Configure git identity
-git config --global user.name "[Project Name] Devlog"
-git config --global user.email "devlog@[repo-name].dev"
-```
-
-Replace `[repo-name]`, `[user]`, `[token]`, and `[Project Name]` with the actual values from the project context established during session setup.
-
-The user's GitHub token will need to be provided each session since the environment resets. Remind the user of this when the skill first triggers, and suggest they have their token ready.
-
-## Multi-Project Support
-
-If the user works on multiple projects, keep each repo cloned in its own directory under `/home/claude/`. When the user switches context (mentions a different project or repo), confirm the switch: "Switching devlog context to [Other Project] — correct?"
-
-The devlog for each project lives in its own repo's `DEVLOG.md` and is managed independently.
-
-## Reading the Devlog
-
-When the user asks about past decisions, progress, or project history:
-
-1. Read DEVLOG.md from the repo
-2. Search entries by category, tags, or keywords
-3. Summarize relevant entries in the conversation
-
-This makes the devlog a two-way resource — not just for writing, but for recalling context.
-
-## Multiple Entries Per Session
-
-If a conversation covers several loggable topics, batch them:
-- Draft all entries at once
-- Present them together for review
-- Commit them in a single push with a summary commit message like `devlog: session updates - [topic1], [topic2]`
-
-## Style Guidelines
-
-- Write in past tense for decisions and completed work ("Chose SQLAlchemy over raw SQL")
-- Write in present tense for ongoing context ("The data model supports 14 tables")
-- Be specific — include version numbers, file names, and concrete details
-- Include the "why" for every "what" — rationale is the most valuable part
-- Reference related devlog entries by date when they exist
-- Keep tags lowercase, hyphenated, and specific enough to be useful for searching
+See [LICENSE](LICENSE) for details.
