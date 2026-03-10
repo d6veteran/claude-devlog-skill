@@ -205,6 +205,19 @@ The devlog for each project lives in its own repo's `DEVLOG.md` and is managed i
 
 ## Reading the Devlog
 
+### At session start (proactive)
+
+When a session begins on a known project that has a DEVLOG.md, **read it before doing any work** — do not wait to be asked. The devlog contains architectural context, past decisions, and rejected alternatives that are invisible from the code alone. Reading it first prevents re-litigating settled decisions and surfaces the "why" behind things that might otherwise look arbitrary.
+
+To locate the devlog:
+1. Check if DEVLOG.md exists in the repo root (`{cwd}/DEVLOG.md`)
+2. If the project is listed in MEMORY.md with a devlog path, use that path
+3. If no DEVLOG.md exists yet, proceed normally — nothing to read
+
+You do not need to summarize the devlog to the user unless they ask. Just read it silently and let it inform your work.
+
+### On demand (reactive)
+
 When the user asks about past decisions, progress, or project history:
 
 1. Read DEVLOG.md from the repo
