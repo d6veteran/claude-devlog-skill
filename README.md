@@ -26,7 +26,7 @@ Developers working on long-running projects who are tired of losing context betw
 
 If you've ever watched Claude suggest an approach you already evaluated and rejected, propose an architecture you already have in place, or ask you to explain something you explained in a session three weeks ago — this is for you.
 
-Works especially well alongside [claude-dev-team](https://github.com/d6veteran/claude-dev-team). When you're switching between specialists like Akira, Robin, and River across multiple sessions, the devlog ensures each new session inherits the full context of what the previous one decided.
+Works especially well alongside [claude-dev-team](https://github.com/code-katz/claude-dev-team). When you're switching between specialists like Akira, Robin, and River across multiple sessions, the devlog ensures each new session inherits the full context of what the previous one decided.
 
 ---
 
@@ -90,7 +90,7 @@ This skill is for [Claude Code](https://claude.ai/code). Install it once and it'
 ```bash
 mkdir -p ~/.claude/skills/devlog
 curl -o ~/.claude/skills/devlog/SKILL.md \
-  https://raw.githubusercontent.com/d6veteran/claude-devlog-skill/main/SKILL.md
+  https://raw.githubusercontent.com/code-katz/claude-devlog-skill/main/SKILL.md
 ```
 
 ---
